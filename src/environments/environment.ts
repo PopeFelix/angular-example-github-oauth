@@ -17,12 +17,14 @@ export const environment = {
     redirectUri: window.location.origin + '/index.html',
     serviceUri: 'http://localhost:9999/authenticate',
     authUri: `https://github.com/login/oauth/authorize?client_id=${clientId}`,
+    scope: 'repo'
   },
   logConfig: {
     level: NgxLoggerLevel.DEBUG, // Level of messages that will be logged locally (i.e. console.log)
     serverLogLevel: NgxLoggerLevel.INFO, // Level of messages that will be sent to the external logging service (if enabled)
     serverLoggingUrl: undefined, // URL to POST logs to (not implemented yet)
   },
+
 }
 
 /*

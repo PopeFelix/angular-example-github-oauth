@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NGXLogger } from 'ngx-logger'
 import { AuthenticationService } from '../authentication.service'
-
+import { LocalStorageService } from 'ngx-webstorage'
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,7 +13,8 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
     private router: Router,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private storage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -37,7 +38,7 @@ export class LoginComponent implements OnInit {
                 )
                 const { token, returnTo } = result
                 this.logger.info(`Store auth token`, { token })
-                localStorage.setItem('github-auth-token', token)
+                this.authenticationService.setAuthToken(token)
                 if (returnTo) {
                   this.logger.debug(`Return to: ${JSON.stringify(returnTo)}`)
                 } else {
@@ -49,21 +50,20 @@ export class LoginComponent implements OnInit {
                 let error
                 if (typeof err === 'object') {
                   error = err.err
-                } else { 
+                } else {
                   error = err
                 }
-                const errors = (localStorage.getItem('errors') || '').split(',')
+
+                const errors: string[] = this.storage.retrieve('errors')
                 errors.push(error)
-                localStorage.setItem('errors', errors.join(','))
+                this.storage.store('errors', errors)
                 this.router.navigate(['/error'])
               }
             )
         } else if (err) {
-          this.logger.error(`Generic error`, { err })
-          localStorage.removeItem('github-auth-token')
-          const errors = (localStorage.getItem('errors') || '').split(',')
+          const errors: string[] = this.storage.retrieve('errors')
           errors.push(err)
-          localStorage.setItem('errors', errors.join(','))
+          this.storage.store('errors', errors)
           this.router.navigate(['/error'])
         }
       }
