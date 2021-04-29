@@ -36,7 +36,8 @@ export class AuthenticationService {
           
           let returnTo: AuthResult['returnTo']
           if (state) {
-            returnTo = JSON.parse(state)
+            const parsed = JSON.parse(state)
+            returnTo = parsed.returnTo
           }
           return { token: (res as AuthResult).token, returnTo }
         }),
