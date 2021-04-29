@@ -1,6 +1,10 @@
 # GithubAuthTest
 
+This is an Angular 11 app demonstrating GitHub authentication.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.5.
+
+It authenticates to GitHub using the [Web Application Flow](https://docs.github.com/en/developers/apps/authorizing-oauth-apps#web-application-flow). As written, the applicaiton expects to communicate with a local [Gatekeeper](https://github.com/prose/gatekeeper) installation running on `localhost:9999`. The URL can be changed in `src/environments/environment.ts`. If you're using something other than Gatekeeper, you're on your own, but the POST stuff is handled in `src/authentication.service.ts`.
 
 ## Development server
 
