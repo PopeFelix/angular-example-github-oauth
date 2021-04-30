@@ -22,25 +22,12 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, private logger: NGXLogger) {}
 
-  getAuthToken(): string | undefined {
+  isAuthenticated(): Observable<boolean> {
     const token = this.authToken
-    if (token) {
-      this.isTokenValid(token).subscribe(
-        (valid) => {
-          if (valid) {
-            this.logger.debug(`Token ${token} is valid`)
-          } else {
-            this.logger.debug(`Token may be invalid`)
-            // this.logger.info(`Invalidated stored auth token`)
-            // this.authToken = ''
-          }
-        },
-        (err) => {
-          this.logger.error(`Error validating stored token`, { err })
-          throw err
-        }
-      )
-    }
+    return this.isTokenValid(token)  
+  }
+  
+  getAuthToken(): string | undefined {
     return this.authToken
   }
 
